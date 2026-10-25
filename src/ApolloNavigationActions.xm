@@ -1204,7 +1204,7 @@ static void ApolloActionsArmFoldedModerator(UIBarButtonItem *more, UIButton *mor
         more.menu = [more.menu menuByReplacingChildren:[more.menu.children arrayByAddingObject:row]];
         return;
     }
-    id target = more.target;
+    __weak id weakTarget = more.target;
     SEL action = more.action;
     __weak UIButton *weakMoreButton = moreButton;
     more.primaryAction = [UIAction actionWithTitle:more.accessibilityLabel ?: @""
@@ -1214,6 +1214,7 @@ static void ApolloActionsArmFoldedModerator(UIBarButtonItem *more, UIButton *mor
         sDuoFoldedModerator = weakModerator;
         sDuoFoldedModeratorAnchor = weakMore;
         sDuoFoldedModeratorArmedAt = CFAbsoluteTimeGetCurrent();
+        id target = weakTarget;
         if (target && action) {
             [UIApplication.sharedApplication sendAction:action to:target from:weakMore forEvent:nil];
         } else {
